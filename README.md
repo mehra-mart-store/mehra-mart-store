@@ -13,4 +13,29 @@ Here are some ideas to get you started:
 - 📫 How to reach me: ...
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
--->
+--># Welcome to MEHRA MART 🤎🖤
+
+**Premium Fashion for Men & Women**
+
+Welcome to MEHRA MART, your destination for stylish clothing and footwear.
+
+### Features
+- Men's Fashion
+- Women's Fashion
+- Shoes and Footwear
+- Product Search and Shopping Cart
+- Premium Brown and Black Design
+- Mobile-Friendly Website
+
+### Built With
+- HTML
+- CSS
+- JavaScript
+
+### Project Status
+Website under development.
+
+### Our Motto
+Your Style, Your Statement.
+
+© MEHRA MART
