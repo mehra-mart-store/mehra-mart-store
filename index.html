@@ -33,6 +33,33 @@ import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/fi
   window.firebaseDb = getFirestore(app);
 
   console.log("MEHRA MART Firebase connected");
+
+const productsQuery = query(
+  collection(window.firebaseDb, "products"),
+  where("active", "==", true)
+);
+
+onSnapshot(productsQuery, (snapshot) => {
+  const firebaseItems = snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      name: data.name,
+      cat: data.category,
+      price: data.price,
+      description: data.description
+    };
+  });
+
+  if (typeof window.setFirebaseItems === "function") {
+    window.setFirebaseItems(firebaseItems);
+  }
+
+  console.log("MEHRA MART products loaded:", firebaseItems.length);
+}, (error) => {
+  console.error("Products load error:", error);
+});
+
 </script>
 </body>
 </html>
