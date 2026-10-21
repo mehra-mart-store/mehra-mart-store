@@ -117,9 +117,13 @@
         }
         const code = document.getElementById("otp").value.trim();
         const result = await confirmation.confirm(code);
-        status.textContent =
-          "Login successful. UID: " + result.user.uid +
-          ". Save this UID privately for the next security step.";
+        if (result.user.uid === "viNPcFUTHsSGf1mNATnIcYIQTO52") {
+  status.textContent = "Login successful! Opening dashboard...";
+  window.location.href = "dashboard.html";
+} else {
+  status.textContent = "Access denied. You are not an authorized admin.";
+}
+      
       } catch (error) {
         status.textContent = "Verification failed: " + error.message;
       }
