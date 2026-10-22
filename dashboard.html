@@ -89,6 +89,30 @@
   <h2>Manage Products</h2>
   <p>Products will appear here for editing.</p>
   <div id="product-list"></div>
+  
+<div id="edit-product-form" style="display:none; margin-top:20px;">
+  <h3>Edit Product</h3>
+
+  <label for="edit-name">Product Name</label>
+  <input id="edit-name" type="text" required>
+
+  <label for="edit-price">Price (₹)</label>
+  <input id="edit-price" type="number" min="1" required>
+
+  <label for="edit-category">Category</label>
+  <select id="edit-category">
+    <option value="Men">Men</option>
+    <option value="Women">Women</option>
+  </select>
+
+  <label for="edit-description">Description</label>
+  <textarea id="edit-description"></textarea>
+
+  <button id="save-product-changes" type="button">Save Changes</button>
+  <button id="cancel-product-edit" type="button">Cancel</button>
+  <p id="edit-status" role="status"></p>
+</div>
+
 </section>
 
     <a href="index.html">View Shopping Website</a>
