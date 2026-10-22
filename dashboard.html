@@ -57,6 +57,34 @@
       <p>Customer order management will be added next.</p>
     </section>
 
+<section class="card">
+  <h2>Add New Product</h2>
+
+  <form id="add-product-form">
+    <label for="product-name">Product Name</label>
+    <input id="product-name" type="text"
+      placeholder="e.g. Men's Cotton Shirt" required>
+
+    <label for="product-price">Price (₹)</label>
+    <input id="product-price" type="number"
+      min="1" step="1" placeholder="599" required>
+
+    <label for="product-category">Category</label>
+    <select id="product-category" required>
+      <option value="">Choose category</option>
+      <option value="Men">Men</option>
+      <option value="Women">Women</option>
+    </select>
+
+    <label for="product-description">Description</label>
+    <textarea id="product-description"
+      placeholder="Enter product details" required></textarea>
+
+    <button type="submit">Add Product</button>
+    <p id="product-status" role="status"></p>
+  </form>
+</section>
+
     <a href="index.html">View Shopping Website</a>
   </main>
 
@@ -64,11 +92,18 @@
   import { initializeApp }
     from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
 
-  import {
-    getAuth,
-    onAuthStateChanged,
-    signOut
-  } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+  
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBD1yJa-dMgvfs9o8lCUNm_h1mDtYQfoG0",
@@ -81,6 +116,40 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+const db = getFirestore(app);
+  
+document.getElementById("add-product-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const status = document.getElementById("product-status");
+  const name = document.getElementById("product-name").value.trim();
+  const price = Number(document.getElementById("product-price").value);
+  const category = document.getElementById("product-category").value;
+  const description = document.getElementById("product-description").value.trim();
+
+  if (!name || !description || !category || !Number.isFinite(price) || price <= 0) {
+    status.textContent = "Please enter valid product details.";
+    return;
+  }
+
+  status.textContent = "Saving product...";
+
+  try {
+    await addDoc(collection(db, "products"), {
+      name: name,
+      price: price,
+      category: category,
+      description: description,
+      active: true
+    });
+
+    status.textContent = "Product added successfully!";
+    document.getElementById("add-product-form").reset();
+  } catch (error) {
+    console.error("Add product error:", error);
+    status.textContent = "Could not add product: " + error.message;
+  }
+});
 
   onAuthStateChanged(auth, async (user) => {
     if (!user) {
