@@ -85,6 +85,12 @@
   </form>
 </section>
 
+<section class="card">
+  <h2>Manage Products</h2>
+  <p>Products will appear here for editing.</p>
+  <div id="product-list"></div>
+</section>
+
     <a href="index.html">View Shopping Website</a>
   </main>
 
@@ -117,7 +123,49 @@ import {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 const db = getFirestore(app);
-  
+ 
+const productList = document.getElementById("product-list");
+
+async function loadProducts() {
+  productList.textContent = "Loading products...";
+
+  try {
+    const snapshot = await getDocs(collection(db, "products"));
+
+    productList.innerHTML = "";
+
+    snapshot.forEach((productDoc) => {
+      const product = productDoc.data();
+
+      const item = document.createElement("div");
+      item.style.margin = "16px 0";
+      item.style.padding = "12px";
+      item.style.border = "1px solid #ccc";
+
+      const name = document.createElement("h3");
+      name.textContent = product.name || "Unnamed Product";
+
+      const price = document.createElement("p");
+      price.textContent = "Price: ₹" + product.price;
+
+      const category = document.createElement("p");
+      category.textContent = "Category: " + (product.category || "");
+
+      item.append(name, price, category);
+      productList.appendChild(item);
+    });
+
+    if (snapshot.empty) {
+      productList.textContent = "No products found.";
+    }
+  } catch (error) {
+    console.error("Load products error:", error);
+    productList.textContent = "Could not load products: " + error.message;
+  }
+}
+
+loadProducts();
+ 
 document.getElementById("add-product-form").addEventListener("submit", async (event) => {
   event.preventDefault();
 
