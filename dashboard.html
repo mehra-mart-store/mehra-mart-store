@@ -207,6 +207,30 @@ editButton.addEventListener("click", () => {
 });
 
 item.appendChild(editButton);
+      
+const deleteButton = document.createElement("button");
+deleteButton.textContent = "Delete Product";
+deleteButton.style.marginLeft = "8px";
+
+deleteButton.addEventListener("click", async () => {
+  const confirmed = confirm(
+    `Delete "${product.name}"? This cannot be undone.`
+  );
+
+  if (!confirmed) return;
+
+  try {
+    await deleteDoc(doc(db, "products", productDoc.id));
+    await loadProducts();
+    alert("Product deleted successfully!");
+  } catch (error) {
+    console.error("Delete product error:", error);
+    alert("Could not delete product: " + error.message);
+  }
+});
+
+item.appendChild(deleteButton);
+
 productList.appendChild(item);
 
       productList.appendChild(item);
