@@ -221,6 +221,46 @@ productList.appendChild(item);
 }
 
 loadProducts();
+
+document.getElementById("save-product-changes")
+  .addEventListener("click", async () => {
+    const status = document.getElementById("edit-status");
+    const id = window.editingProductId;
+
+    const name = document.getElementById("edit-name").value.trim();
+    const price = Number(document.getElementById("edit-price").value);
+    const category = document.getElementById("edit-category").value;
+    const description = document.getElementById("edit-description").value.trim();
+
+    if (!id || !name || !description || !category ||
+        !Number.isFinite(price) || price <= 0) {
+      status.textContent = "Please enter valid product details.";
+      return;
+    }
+
+    status.textContent = "Saving changes...";
+
+    try {
+      await updateDoc(doc(db, "products", id), {
+        name,
+        price,
+        category,
+        description
+      });
+
+      status.textContent = "Product updated successfully!";
+      document.getElementById("edit-product-form").style.display = "none";
+      await loadProducts();
+    } catch (error) {
+      console.error("Update product error:", error);
+      status.textContent = "Update failed: " + error.message;
+    }
+  });
+
+document.getElementById("cancel-product-edit")
+  .addEventListener("click", () => {
+    document.getElementById("edit-product-form").style.display = "none";
+  });
  
 document.getElementById("add-product-form").addEventListener("submit", async (event) => {
   event.preventDefault();
